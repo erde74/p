@@ -8,73 +8,77 @@
 #include <stdio.h>
 #include <string.h>
 #include <alloca.h>
-#include <stdint.h> 
-#include <alloca.h> 
+#include <stdint.h>
+#include <alloca.h>
 
 #include <gc.h>
 
 /* ======================================================================= */
 
-typedef unsigned long               uns_int;
-typedef long                        tSmallInteger;
+typedef unsigned long uns_int;
+typedef long tSmallInteger;
 
-typedef struct Object*              tObject;
-typedef tObject                     tArray;
-typedef struct Behavior*            tBehavior;
-typedef struct STBehavior*          tSTBehavior;
-typedef struct Class*               tClass;
-typedef struct Slot*                tSlot;
-typedef struct Metaclass*           tMetaclass;
-typedef struct Dictionary*          tDictionary;
-typedef struct Dictionary*          tSymbolTable;
-typedef struct Bucket*              tBucket;
-typedef struct Block*               tBlock;
-typedef struct Method*              tMethod;
-typedef struct BlockClosure*        tBlockClosure;
-typedef struct NativeName*          tNativeName;
+typedef struct Object *tObject;
+typedef tObject tArray;
+typedef struct Behavior *tBehavior;
+typedef struct STBehavior *tSTBehavior;
+typedef struct Class *tClass;
+typedef struct Slot *tSlot;
+typedef struct Metaclass *tMetaclass;
+typedef struct Dictionary *tDictionary;
+typedef struct Dictionary *tSymbolTable;
+typedef struct Bucket *tBucket;
+typedef struct Block *tBlock;
+typedef struct Method *tMethod;
+typedef struct BlockClosure *tBlockClosure;
+typedef struct NativeName *tNativeName;
 
-typedef struct Context*             tContext;
-typedef struct MethodContext*       tMethodContext;
-typedef struct BlockContext*        tBlockContext;
-typedef struct Thread*              tThread;
-typedef struct JumpTarget*          tJumpTarget;
+typedef struct Context *tContext;
+typedef struct MethodContext *tMethodContext;
+typedef struct BlockContext *tBlockContext;
+typedef struct Thread *tThread;
+typedef struct JumpTarget *tJumpTarget;
 
-typedef tDictionary                 tIdentityDictionary;
-typedef tDictionary                 tMethodDictionary;
-typedef tDictionary                 tNativesDictionary;
+typedef tDictionary tIdentityDictionary;
+typedef tDictionary tMethodDictionary;
+typedef tDictionary tNativesDictionary;
 
-typedef tSlot*      tLayout;
-typedef char*       tSymbol;
-typedef char*       tString;
+typedef tSlot *tLayout;
+typedef char *tSymbol;
+typedef char *tString;
 
-typedef struct BucketArray {
+typedef struct BucketArray
+{
     tBucket bucket[0];
-}* tBucketArray;
+} * tBucketArray;
 
 extern struct Class Array;
 
-#define ENC_INT(v)  (((v) << 1) + 1)
-#define DEC_INT(v)  ((long)(v) >> 1)
-#define IS_INT(v)   ((unsigned char)(long)(v) & (char)1)
+#define ENC_INT(v) (((v) << 1) + 1)
+#define DEC_INT(v) ((long)(v) >> 1)
+#define IS_INT(v) ((unsigned char)(long)(v) & (char)1)
 #define ARE_INTS(x, y) ((unsigned char)(x) & (unsigned char)(y) & (char)1)
 
-#define PINOCCHIO_FAIL(msg...) printf(msg); printf("\n"); __asm("int3"); 
-#define BEHAVIOR_OF(object)    (((long)object) & 1?(&SmallInteger_behavior):((tClass*)object)[-2])
+#define PINOCCHIO_FAIL(msg...) \
+    printf(msg);               \
+    printf("\n");              \
+    __asm("int3");
+#define BEHAVIOR_OF(object) (((long)object) & 1 ? (&SmallInteger_behavior) : ((tClass *)object)[-2])
 
-#define HEADER(object)      (((tHeader*)object)[-1])
-#define BASE(object)        HEADER(object).base
-#define BYTES(object)       HEADER(object).bytes
-#define VARIABLE(object)    HEADER(object).variable
-#define MUTABLE(object)     HEADER(object).mutable
-#define GCMARK(object)      HEADER(object).gcmark
-#define HASH(object)        ((unsigned long)HEADER(object).hash)
-#define SIZE(object)        ((long)((tObject*)object)[-3])
+#define HEADER(object) (((tHeader *)object)[-1])
+#define BASE(object) HEADER(object).base
+#define BYTES(object) HEADER(object).bytes
+#define VARIABLE(object) HEADER(object).variable
+#define MUTABLE(object) HEADER(object).mutable
+#define GCMARK(object) HEADER(object).gcmark
+#define HASH(object) ((unsigned long)HEADER(object).hash)
+#define SIZE(object) ((long)((tObject *)object)[-3])
 
 #ifdef __APPLE__
-    #define FN_PREFIX "_"
-#else   
-    #define FN_PREFIX
-#endif 
+#define FN_PREFIX "_"
+#else
+#define FN_PREFIX
+#endif
 
 typedef struct Header tHeader;
 
@@ -92,6 +96,8 @@ extern struct Class True;
 extern struct Class False;
 extern struct Class SmallInteger;
 extern struct STBehavior SmallInteger_behavior;
+extern struct Class Float;
+extern struct STBehavior Float_behavior;
 extern struct Class Symbol;
 extern struct STBehavior Symbol_behavior;
 extern struct Class String;
